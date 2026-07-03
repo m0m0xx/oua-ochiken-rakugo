@@ -101,7 +101,7 @@
         .clear-btn { background: none; border: none; color: #999; font-size: 0.8rem; cursor: pointer; text-decoration: underline; }
         .clear-btn:hover { color: var(--main-purple); }
 
-        /* 🔒 新しく追加した注意書きのCSS */
+        /* 🔒 注意書きのCSS */
         .ai-notice-box {
             background-color: #F9F8FC;
             border: 1px solid #E6E1F0;
@@ -261,11 +261,11 @@
                     <span class="glossary-term">■ 策伝大賞（全日本学生落語選手権）</span>
                     <p class="glossary-def">岐阜県岐阜市で毎年開催される、学生落語の甲子園とも呼ばれる最大規模の大会。全国から数多くの学生が集まり、落語の祖とされる「策伝上人」にちなんで日本一を競い合う。</p>
 
-                    <span class="glossary-term">■ 桂福丸杯（全国学生落語いなみ大会）</span>
-                    <p class="glossary-def">兵庫県稲美町で開催される大会。プロの落語家である桂福丸師匠がプロデュースに携わっており、学生らしい瑞々しさと技術を競い合う熱い高座が繰り広げられる。</p>
-
                     <span class="glossary-term">■ ちりとてちん杯（全国女性学生落語大会）</span>
                     <p class="glossary-def">福井県小浜市で開催される、全国の「女性学生落語家」を対象としたユニークな大会。NHK連続テレビ小説『ちりとてちん』の舞台となった地で、華やかかつハイレベルな戦いが行われる。</p>
+
+                    <span class="glossary-term">■ 桂福丸杯</span>
+                    <p class="glossary-def">落語家の桂福丸さんが主宰する、学生を対象とした落語コンテスト。次世代を担う若い才能の発掘や、落語文化の普及を目的として熱い高座が繰り広げられる。</p>
                 </div>
             </div>
 
@@ -391,7 +391,7 @@
                     <p class="glossary-def">噺の結末、最後に落とす部分のこと。「地口サゲ（駄洒落）」「仕込みサゲ」「逆さサゲ」など様々な種類が存在する。</p>
 
                     <span class="glossary-term">出囃子（でばやし）</span>
-                    <p class="glossary-def">落語家が高座に登場する際に、三味線や太鼓で演奏されるテーマ曲のこと。演者ごとに専用 of 曲が決まっている。</p>
+                    <p class="glossary-def">落語家が高座に登場する際に、三味線や太鼓で演奏されるテーマ曲のこと。演者ごとに専用の曲が決まっている。</p>
                 </div>
             </div>
 
@@ -455,7 +455,7 @@
                     aiResponse = aiResponse.replace(/###\s*(.*?)\n/g, '<strong>$1</strong><br>');
                     aiResponse = aiResponse.replace(/^\s*[\*\-]\s*/gm, '・ ');
                     aiResponse = aiResponse.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" style="color: var(--main-purple); font-weight: bold; text-decoration: underline;">$1</a>');
-                    aiResponse = aiResponse.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    aiResponse = aiResponse.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\"/g, '<strong>$1</strong>');
 
                     html += `
                         <p style="margin-top: 10px; border-top: 1px dashed #E2DDEB; padding-top: 10px;">
