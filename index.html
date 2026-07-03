@@ -140,6 +140,28 @@
         .glossary-term { font-weight: bold; color: var(--dark-purple); font-size: 1.05rem; margin-top: 15px; display: block; }
         .glossary-def { margin-bottom: 15px; padding-left: 10px; border-left: 3px solid var(--main-purple); font-size: 0.95rem; color: #555; line-height: 1.5; }
 
+        /* 👘 必要なもの・準備ページ用テーブル */
+        .kimono-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9em; /* 少し小さめにしてスマホで収まりやすく */
+        }
+        .kimono-table th, 
+        .kimono-table td {
+            border: 1px solid #ccc;
+            padding: 12px 8px;
+            text-align: left;
+        }
+        .kimono-table th {
+            background-color: #f8f8f8;
+            font-weight: bold;
+        }
+        /* 交互に色を変えて見やすくする */
+        .kimono-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
         /* オリジナルのポップアップ（モーダル）のCSS */
         .modal-overlay {
             position: fixed;
@@ -231,6 +253,7 @@
             <li id="menu-ai"><a onclick="switchPage('ai')">🤖 AIなんでも相談室</a></li>
             <li id="menu-music"><a onclick="switchPage('music')">🥁 寄席囃子音源集</a></li>
             <li id="menu-terms"><a onclick="switchPage('terms')">📖 落語用語集</a></li>
+            <li id="menu-prep"><a onclick="switchPage('prep')">👘 必要なもの・準備</a></li>
         </ul>
     </nav>
 
@@ -407,6 +430,61 @@
                 </div>
             </div>
 
+            <div id="page-prep" class="page-content">
+                <div class="article-card">
+                    <div class="article-category">👘 必要なもの</div>
+                    <h2 class="page-title-main">必要なもの・準備</h2>
+                    <p class="desc-text-sm">高座に上がる際に必要な物一式のリスト。男物・女物で異なるので確認を。</p>
+
+                    <table class="kimono-table">
+                        <thead>
+                            <tr>
+                                <th>カテゴリ</th>
+                                <th>男物（着物・羽織）</th>
+                                <th>女物（着物）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>肌着</td>
+                                <td>ステテコ、肌襦袢</td>
+                                <td>肌襦袢、裾除け</td>
+                            </tr>
+                            <tr>
+                                <td>下着</td>
+                                <td>腹巻（あれば）</td>
+                                <td>和装ブラ、補正タオル</td>
+                            </tr>
+                            <tr>
+                                <td>長襦袢</td>
+                                <td>半衿付きのもの</td>
+                                <td>半衿付きのもの</td>
+                            </tr>
+                            <tr>
+                                <td>着物</td>
+                                <td>長着</td>
+                                <td>着物</td>
+                            </tr>
+                            <tr>
+                                <td>帯</td>
+                                <td>角帯</td>
+                                <td>半幅帯</td>
+                            </tr>
+                            <tr>
+                                <td>小物</td>
+                                <td>腰紐(2〜3本)、足袋</td>
+                                <td>腰紐(3〜4本)、伊達締め、帯板、足袋</td>
+                                </tr>
+                            <tr>
+                                <td>共通</td>
+                                <td>高座扇、手ぬぐい</td>
+                                <td>高座扇、手ぬぐい</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </main>
     </div>
 
@@ -503,7 +581,7 @@
             document.getElementById('page-' + pageName).classList.add('active');
             document.getElementById('menu-' + pageName).classList.add('active');
             
-            const titleMap = { 'home': '🏠 ホーム・部内ルール', 'ai': '🤖 AIなんでも相談室', 'music': '🥁 寄席囃子音源集', 'terms': '📖 落語用語集' };
+            const titleMap = { 'home': '🏠 ホーム・部内ルール', 'ai': '🤖 AIなんでも相談室', 'music': '🥁 寄席囃子音源集', 'terms': '📖 落語用語集', 'prep': '🎽 必要なもの・準備' };
             document.getElementById('page-title').innerText = titleMap[pageName];
         }
 
