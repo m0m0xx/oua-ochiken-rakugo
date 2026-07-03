@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>落語組用 落語AI大百科</title>
+    <title>芸大落研落語組用</title>
     <style>
         :root {
             --main-purple: #7F67B2;
@@ -90,11 +90,15 @@
         .tag { background: var(--light-purple); color: var(--dark-purple); padding: 6px 12px; border-radius: 12px; font-size: 0.85rem; cursor: pointer; border: 1px solid #E2DDEB; font-weight: 500; }
         .tag:hover { background: #E1D7F5; }
 
-        /* リスト・テーブル装飾 */
+        /* リスト・テーブル・テキスト装飾 */
         .info-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.95rem; }
         .info-table th, .info-table td { padding: 12px; border-bottom: 1px solid var(--border-color); text-align: left; }
         .info-table th { background-color: var(--light-purple); color: var(--dark-purple); }
-        .info-link { color: var(--main-purple); font-weight: bold; text-decoration: underline; }
+        .info-link { color: var(--main-purple); font-weight: bold; text-decoration: underline; display: inline-block; margin: 4px 0; }
+        
+        .rule-box { background-color: #FFF9F9; border-left: 4px solid #FF8E8E; padding: 15px; margin: 15px 0; border-radius: 0 4px 4px 0; font-size: 0.95rem; line-height: 1.6; }
+        .rule-box ul { padding-left: 20px; }
+
         .glossary-section-title { font-size: 1.2rem; font-weight: bold; color: var(--main-purple); margin-top: 30px; margin-bottom: 10px; border-bottom: 2px solid var(--light-purple); padding-bottom: 5px; }
         .glossary-term { font-weight: bold; color: var(--dark-purple); font-size: 1.05rem; margin-top: 15px; display: block; }
         .glossary-def { margin-bottom: 15px; padding-left: 10px; border-left: 3px solid var(--main-purple); font-size: 0.95rem; color: #555; line-height: 1.5; }
@@ -120,9 +124,10 @@
 <body>
 
     <nav class="sidebar">
-        <div class="sidebar-brand">落語組用 🏯</div>
+        <div class="sidebar-brand">芸大落研落語組 🏯</div>
         <ul class="sidebar-menu">
-            <li id="menu-ai" class="active"><a onclick="switchPage('ai')">🤖 AIなんでも相談室</a></li>
+            <li id="menu-home" class="active"><a onclick="switchPage('home')">🏠 ホーム・部内ルール</a></li>
+            <li id="menu-ai"><a onclick="switchPage('ai')">🤖 AIなんでも相談室</a></li>
             <li id="menu-music"><a onclick="switchPage('music')">🥁 寄席囃子音源集</a></li>
             <li id="menu-terms"><a onclick="switchPage('terms')">📖 落語用語集</a></li>
         </ul>
@@ -130,12 +135,41 @@
 
     <div class="main-container">
         <header class="header">
-            <div id="page-title" style="font-weight: bold; color: var(--dark-purple);">AIなんでも相談室</div>
+            <div id="page-title" style="font-weight: bold; color: var(--dark-purple);">🏠 ホーム・部内ルール</div>
         </header>
 
         <main class="content">
             
-            <div id="page-ai" class="page-content active">
+            <!-- 🏠 【ページ0】ホーム・部内ルール -->
+            <div id="page-home" class="page-content active">
+                <div class="article-card">
+                    <div class="article-category">📢 芸大落研落語組</div>
+                    <h2 style="margin-bottom: 15px; font-size: 1.2rem;">落語組部内ルール</h2>
+                    
+                    <div class="rule-box">
+                        <ul>
+                            <li><strong>芸漫一週間前の週までに</strong>、先輩にネタ見せをお願いすること。</li>
+                            <li><strong>初高座の場合</strong>は、ネタ見せは<strong>最低2回以上必須</strong>とする。</li>
+                            <li>困ったことがあれば、<strong>2年桃花をはじめとした先輩</strong>に相談すること。</li>
+                        </ul>
+                    </div>
+
+                    <h2 style="margin-top: 30px; margin-bottom: 15px; font-size: 1.2rem; border-bottom: 2px solid var(--light-purple); padding-bottom: 5px;">🏆 主要な学生落語大会</h2>
+                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">学生落語家たちが目標にする、全国規模の代表的な大会一覧。高座のブラッシュアップや目標設定の参考にしよう。</p>
+                    
+                    <span class="glossary-term">■ 策伝大賞（全日本学生落語選手権）</span>
+                    <p class="glossary-def">岐阜県岐阜市で毎年開催される、学生落語の甲子園とも呼ばれる最大規模の大会。全国から数多くの学生が集まり、落語の祖とされる「策伝上人」にちなんで日本一を競い合う。</p>
+
+                    <span class="glossary-term">■ 桂福丸杯（全国学生落語いなみ大会）</span>
+                    <p class="glossary-def">兵庫県稲美町で開催される大会。プロの落語家である桂福丸師匠がプロデュースに携わっており、学生らしい瑞々しさと技術を競い合う熱い高座が繰り広げられる。</p>
+
+                    <span class="glossary-term">■ ちりとてちん杯（全国女性学生落語大会）</span>
+                    <p class="glossary-def">福井県小浜市で開催される、全国の「女性学生落語家」を対象としたユニークな大会。NHK連続テレビ小説『ちりとてちん』の舞台となった地で、華やかかつハイレベルな戦いが行われる。</p>
+                </div>
+            </div>
+
+            <!-- 💻 【ページ1】AI相談室 -->
+            <div id="page-ai" class="page-content">
                 <div class="article-card">
                     <div class="article-category">🌟 落語研究会・AI顧問</div>
                     <h2 style="margin-bottom: 10px; font-size: 1.2rem;">落語なんでも相談室</h2>
@@ -159,11 +193,12 @@
                 </div>
             </div>
 
+            <!-- 🥁 【ページ2】寄席囃子音源集 -->
             <div id="page-music" class="page-content">
                 <div class="article-card">
                     <div class="article-category">🥁 出囃子・舞台音楽</div>
-                    <h2 style="margin-bottom: 15px; font-size: 1.2rem;">寄席囃子 YouTube音源・アルバム一覧</h2>
-                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">※リンクを送ってもらったらここにアルバムURLを貼り付けます！</p>
+                    <h2 style="margin-bottom: 15px; font-size: 1.2rem;">寄席囃子 Spotifyアルバム一覧</h2>
+                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">寄席や高座の雰囲気を掴み、出囃子の選曲に役立つプロの公式音源アルバムです。</p>
                     
                     <table class="info-table">
                         <thead>
@@ -175,78 +210,78 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>寄席囃子（再生リスト）</strong></td>
-                                <td>「一丁入り」「二番太鼓」「はね太鼓」や、代表的な出囃子がまとまったプロの演奏動画です。</td>
-                                <td><a class="info-link" href="https://www.youtube.com/results?search_query=%E5%AF%84%E5%B8%AD%E5%91%AC%E5%AD%90" target="_blank">YouTubeで検索</a></td>
+                                <td><strong>寄席囃子 アルバム</strong></td>
+                                <td>「一番太鼓」「二番太鼓」「仲入り」「中シャギリ」「ハネ太鼓（バレ太鼓）」など、寄席の進行に欠かせない基礎音源を網羅。</td>
+                                <td><a class="info-link" href="https://open.spotify.com/intl-ja/album/6qY5MhViutyIk6Nidw0ycg?si=uqOqVDG_Q6WzGJTLH-CcDg" target="_blank">🎵 Spotifyで聴く</a></td>
                             </tr>
                             <tr>
-                                <td><strong>落語 出囃子集（検索用）</strong></td>
-                                <td>「野崎」「元禄花見踊」「二上り甚句」など、演者の登場時に流れる定番の出囃子が個別に探せます。</td>
-                                <td><a class="info-link" href="https://www.youtube.com/results?search_query=%E8%90%BD%E8%AA%9E+%E5%87%BA%E5%91%AC%E5%AD%90" target="_blank">YouTubeで検索</a></td>
-                            </tr>
-                            <tr>
-                                <td><strong>おすすめアルバム（仮）</strong></td>
-                                <td>送ってもらう予定のプロの寄席囃子アルバムリンク用スペースです。</td>
-                                <td><a class="info-link" href="【ここに送ってもらうリンクを貼る】" target="_blank">アルバムを聴く</a></td>
+                                <td><strong>落語 出囃子集アルバム</strong></td>
+                                <td>「石段」「前座の上がり」など、演者の登場時に流れる定番の出囃子が多数収録されたアルバム集。</td>
+                                <td>
+                                    <a class="info-link" href="https://open.spotify.com/intl-ja/album/6qY5MhViutyIk6Nidw0ycg?si=uqOqVDG_Q6WzGJTLH-CcDg" target="_blank">🎵 出囃子集①</a><br>
+                                    <a class="info-link" href="https://open.spotify.com/intl-ja/album/2bCEznKddFRz4SCd2WV7os?si=xjVwg4LGRde6AsjydEAr0A" target="_blank">🎵 出囃子集②</a><br>
+                                    <a class="info-link" href="https://open.spotify.com/intl-ja/album/747NJua19N1XIHaYajpowu?si=ZFcf0RbZTB60EiOOwPAYrQ" target="_blank">🎵 出囃子集③</a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
+            <!-- 📖 【ページ3】落語用語集 -->
             <div id="page-terms" class="page-content">
                 <div class="article-card">
                     <div class="article-category">📖 基礎知識</div>
                     <h2 style="margin-bottom: 15px; font-size: 1.2rem;">落語研究会 必須用語集</h2>
-                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">落研の活動や寄席の番組（プログラム）を理解する上で、絶対に覚えておきたい専門用語です。</p>
+                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">落研の活動や寄席の番組（プログラム）を理解する上で必要な専門用語。</p>
                     
                     <div class="glossary-section-title">📌 番組（香盤・出番）に関する用語</div>
 
                     <span class="glossary-term">開口一番（かいこういちばん）</span>
-                    <p class="glossary-def">落語会や寄席の一番最初、トップバッターの枠のこと。基本的には前座（落研では新人や後輩）が担当し、場を温める役割を持ちます。</p>
+                    <p class="glossary-def">落語会や寄席の一番最初、トップバッターの枠のこと。基本的には前座（落研では新人や後輩）が担当し、客席を温める役割を持つ。</p>
 
                     <span class="glossary-term">中トリ / 仲トリ（なかとり）</span>
-                    <p class="glossary-def">前半戦の最後（仲入り休憩の前）に登場する、非常に重要なポジションの演者。ここで一度大きな盛り上がりを作ります。</p>
+                    <p class="glossary-def">前半戦の最後、すなわち「仲入り」の休憩前に入る最も格の高い出番のこと。前半戦の主役として大きな盛り上がりを作る役割を担う。</p>
 
                     <span class="glossary-term">仲入り（なかいり）</span>
-                    <p class="glossary-def">寄席や長時間の落語会における「休憩時間」のこと。中トリの出番が終わったタイミングで入ります。</p>
+                    <p class="glossary-def">寄席や長時間の落語会における中休みのこと。中トリの出番が終わったタイミングで設けられる。</p>
 
                     <span class="glossary-term">シバリ</span>
-                    <p class="glossary-def">仲入りの休憩が明けた直後、後半戦の一番最初（食いつき）の出番のこと。休憩気分の客席を再び落語に引き戻す技量が求められます。</p>
+                    <p class="glossary-def">仲入りの休憩が明けた直後、後半戦の一番最初（食いつき）の出番のこと。休憩気分の客席を再び落語の世界に引き戻す技量が求められる。</p>
 
                     <span class="glossary-term">モタレ</span>
-                    <p class="glossary-def">最後の主役（トリ）のすぐ前に登場する出番のこと。トリの演者が得意なネタや雰囲気を邪魔しないよう配慮しつつ、客席を最高潮に温めてバトンを渡す重要な役割です。</p>
+                    <p class="glossary-def">最後の主役（トリ）のすぐ前に登場する出番のこと。トリの演者の邪魔をしないよう配慮しつつ、客席を最高潮に温めてバトンを渡す重要なポジションである。</p>
 
                     <span class="glossary-term">主任 / トリ（しゅにん / とり）</span>
-                    <p class="glossary-def">その日の落語会や寄席の「大トリ」、つまり最後の主役となる一番格上の演者です。その会全体の責任を背負って高座に上がります。</p>
+                    <p class="glossary-def">その日の落語会や寄席の最後を締めくくる、一番格上の演者のこと。興行全体の責任を背負って高座に上がる。</p>
 
                     <div class="glossary-section-title">🎪 会（公演）の種類に関する用語</div>
 
                     <span class="glossary-term">独演会（どくえんかい）</span>
-                    <p class="glossary-def">特定の落語家が1人で主催し、メインで何席も（2〜3席ほど）落語を披露する会。その人の実力や世界観をたっぷり堪能できる会です。</p>
+                    <p class="glossary-def">特定の落語家が単独で主催し、メインとして複数のネタを披露する落語会のこと。演者個人の実力や世界観を深く堪能できる公演形式である。</p>
 
-                    <span class="glossary-term">二人会（ふたりかい）</span>
-                    <p class="glossary-def">2人の落語家が並び立ってメインを務める落語会。ライバル同士や仲の良い師匠同士など、2人の掛け合いやネタの対比を楽しみます。</p>
+                    <span class="glossary-term">二人会（ににんかい／ふたりかい）</span>
+                    <p class="glossary-def">2人の落語家が並び立ってメインを務める落語会のこと。実力派同士の対決や師弟対談など、2人のネタの対比や掛け合いを楽しむ。</p>
 
                     <span class="glossary-term">寄席（よせ）</span>
-                    <p class="glossary-def">年中無休で毎日落語や色物（漫才やマジック）を交代で上演している常設の劇場のこと（鈴本演芸場や末廣亭など）。多くの演者が10〜15分程度の短いネタで次々と登場します。</p>
+                    <p class="glossary-def">年中無休で毎日、落語や色物（漫才やマジック）を交代で上演している常設の劇場のこと（東京の鈴本演芸場、新宿末廣亭、大阪の天満天神繁昌亭など）。多くの演者が10〜15分程度の短いネタで次々と登場する。</p>
 
                     <span class="glossary-term">落語会（らくごかい / ホール落語）</span>
-                    <p class="glossary-def">市民ホールや劇場などを借りて、特定の主催者が企画する単発の落語公演。出演者やネタがあらかじめ決まっていることが多いです。</p>
+                    <p class="glossary-def">市民ホールや劇場を借りて、特定の主催者が企画する単発の落語公演のこと。出演者やネタがあらかじめ決まっていることが多い。</p>
 
                     <span class="glossary-term">勉強会（べんきょうかい）</span>
-                    <p class="glossary-def">落語家がまだ本番で掛けたことのない新しいネタ（新ネタ）に挑戦したり、稽古の成果を試したりするために、少人数の前で低価格で行う実験的な落語会。落研でも内々の練習発表の場としてよく使われます。</p>
+                    <p class="glossary-def">落語家が新ネタに挑戦したり、稽古の成果を試したりするために、少人数の前で低価格で行う実験的な落語会のこと。落研における内々の練習発表 of の場としても用いられる。</p>
 
                     <div class="glossary-section-title">🏯 その他落語の基本用語</div>
 
                     <span class="glossary-term">前座 / 前座噺（ぜんざ / ぜんざばなし）</span>
-                    <p class="glossary-def">開口一番に演じられる、短くて分かりやすい滑稽噺のこと。基本が凝縮されており、初心者が最初に覚えるべきネタ。</p>
+                    <p class="glossary-def">開口一番に演じられる、短くて分かりやすい滑稽噺のこと。落語の基本が凝縮されており、初心者が最初に覚えるべきネタである。</p>
 
                     <span class="glossary-term">サゲ / オチ</span>
-                    <p class="glossary-def">噺の結末、最後に落とす部分のこと。「地口サゲ（駄洒落）」「仕込みサゲ」「逆さサゲ」など様々な種類がある。</p>
+                    <p class="glossary-def">噺の結末、最後に落とす部分のこと。「地口サゲ（駄洒落）」「仕込みサゲ」「逆さサゲ」など様々な種類が存在する。</p>
 
                     <span class="glossary-term">出囃子（でばやし）</span>
-                    <p class="glossary-def">落語家が高座（ステージ）に登場する際に、三味線や太鼓で演奏されるテーマ曲のこと。演者によって曲が決まっている。</p>
+                    <p class="glossary-def">落語家が高座に登場する際に、三味線や太鼓で演奏されるテーマ曲のこと。演者ごとに専用の曲が決まっている。</p>
                 </div>
             </div>
 
@@ -263,7 +298,7 @@
             document.getElementById('page-' + pageName).classList.add('active');
             document.getElementById('menu-' + pageName).classList.add('active');
             
-            const titleMap = { 'ai': '🤖 AIなんでも相談室', 'music': '🥁 寄席囃子音源集', 'terms': '📖 落語用語集' };
+            const titleMap = { 'home': '🏠 ホーム・部内ルール', 'ai': '🤖 AIなんでも相談室', 'music': '🥁 寄席囃子音源集', 'terms': '📖 落語用語集' };
             document.getElementById('page-title').innerText = titleMap[pageName];
         }
 
