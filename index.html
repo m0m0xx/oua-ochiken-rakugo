@@ -85,6 +85,11 @@
         .chat-input-area button { background-color: var(--main-purple); color: white; border: none; padding: 0 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
         .chat-input-area button:disabled { background-color: #ccc; cursor: not-allowed; }
         
+        /* 履歴クリアボタンの装飾 */
+        .chat-header-area { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .clear-btn { background: none; border: none; color: #999; font-size: 0.8rem; cursor: pointer; text-decoration: underline; }
+        .clear-btn:hover { color: var(--main-purple); }
+
         /* 例題タグ */
         .example-tags { margin-top: 15px; display: flex; flex-wrap: wrap; gap: 8px; }
         .tag { background: var(--light-purple); color: var(--dark-purple); padding: 6px 12px; border-radius: 12px; font-size: 0.85rem; cursor: pointer; border: 1px solid #E2DDEB; font-weight: 500; }
@@ -161,7 +166,7 @@
                     <p class="glossary-def">岐阜県岐阜市で毎年開催される、学生落語の甲子園とも呼ばれる最大規模の大会。全国から数多くの学生が集まり、落語の祖とされる「策伝上人」にちなんで日本一を競い合う。</p>
 
                     <span class="glossary-term">■ 桂福丸杯（全国学生落語いなみ大会）</span>
-                    <p class="glossary-def">兵庫県稲美町で開催される大会。プロの落語家である桂福丸師匠がプロデュースに携わっており、学生らしい瑞々しさと技術を競い合う熱い高座が繰り広げられる。</p>
+                    <p class="glossary-def">兵庫県稲美町で開催される大会. プロの落語家である桂福丸師匠がプロデュースに携わっており、学生らしい瑞々しさと技術を競い合う熱い高座が繰り広げられる。</p>
 
                     <span class="glossary-term">■ ちりとてちん杯（全国女性学生落語大会）</span>
                     <p class="glossary-def">福井県小浜市で開催される、全国の「女性学生落語家」を対象としたユニークな大会。NHK連続テレビ小説『ちりとてちん』の舞台となった地で、華やかかつハイレベルな戦いが行われる。</p>
@@ -171,12 +176,15 @@
             <!-- 💻 【ページ1】AI相談室 -->
             <div id="page-ai" class="page-content">
                 <div class="article-card">
-                    <div class="article-category">落語研究寄席の会・AI</div>
+                    <div class="chat-header-area">
+                        <div class="article-category">落語研究寄席の会・AI</div>
+                        <button class="clear-btn" onclick="clearChatHistory()">🧹 会話をリセットする</button>
+                    </div>
                     <h2 style="margin-bottom: 10px; font-size: 1.2rem;">落語なんでも相談室</h2>
                     <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">演目のランクや結末までのあらすじ、落語の歴史、プロのYouTube動画案内など、お気軽にご質問ください。</p>
                     
                     <div id="chat-box">
-                        <p style="color: #666;">💬 下のボタンを押すか、直接知りたいことを入力して「質問する」を押してください。</p>
+                        <!-- ここに会話履歴、または初期メッセージがJavaScriptで入ります -->
                     </div>
 
                     <div class="chat-input-area">
@@ -281,7 +289,7 @@
                     <p class="glossary-def">噺の結末、最後に落とす部分のこと。「地口サゲ（駄洒落）」「仕込みサゲ」「逆さサゲ」など様々な種類が存在する。</p>
 
                     <span class="glossary-term">出囃子（でばやし）</span>
-                    <p class="glossary-def">落語家が高座に登場する際に、三味線や太鼓で演奏されるテーマ曲のこと。演者ごとに専用の曲が決まっている。</p>
+                    <p class="glossary-def">落語家が高座に登場する際に、三味線や太鼓で演奏されるテーマ曲のこと。演者ごとに専用 of の曲が決まっている。</p>
                 </div>
             </div>
 
@@ -290,6 +298,72 @@
 
     <script>
         let chatHistory = [];
+
+        // ページ読み込み時に保存された会話履歴を復元
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedHistory = localStorage.getItem('rakugo_ai_history');
+            if (savedHistory) {
+                try {
+                    chatHistory = JSON.parse(savedHistory);
+                    renderChatHistory();
+                } catch (e) {
+                    console.error("履歴の復元に失敗しました", e);
+                    initChatBox();
+                }
+            } else {
+                initChatBox();
+            }
+        });
+
+        function initChatBox() {
+            const chatBox = document.getElementById('chat-box');
+            chatBox.innerHTML = `<p style="color: #666;">💬 下のボタンを押すか、直接知りたいことを入力して「質問する」を押してください。</p>`;
+        }
+
+        // 画面にこれまでの会話をすべて綺麗に再描画する関数
+        function renderChatHistory() {
+            const chatBox = document.getElementById('chat-box');
+            if (chatHistory.length === 0) {
+                initChatBox();
+                return;
+            }
+
+            let html = "";
+            let userPrompt = "";
+
+            chatHistory.forEach((msg) => {
+                if (msg.role === "user") {
+                    userPrompt = msg.parts[0].text;
+                    html += `<p style="margin-top: 10px;"><strong>あなた:</strong> ${userPrompt}</p>`;
+                } else if (msg.role === "model") {
+                    let aiResponse = msg.parts[0].text;
+                    
+                    // 特殊な文字装飾をHTML用に変換
+                    aiResponse = aiResponse.replace(/###\s*(.*?)\n/g, '<strong>$1</strong><br>');
+                    aiResponse = aiResponse.replace(/^\s*[\*\-]\s*/gm, '・ ');
+                    aiResponse = aiResponse.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" style="color: var(--main-purple); font-weight: bold; text-decoration: underline;">$1</a>');
+                    aiResponse = aiResponse.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+                    html += `
+                        <p style="margin-top: 10px; border-top: 1px dashed #E2DDEB; padding-top: 10px;">
+                            <strong>AI顧問 🤖:</strong><br>${aiResponse}
+                        </p>
+                    `;
+                }
+            });
+
+            chatBox.innerHTML = html;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // 会話をリセットする関数
+        function clearChatHistory() {
+            if (confirm("これまでのAIとの会話履歴をすべて消去しますか？")) {
+                chatHistory = [];
+                localStorage.removeItem('rakugo_ai_history');
+                initChatBox();
+            }
+        }
 
         function switchPage(pageName) {
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
@@ -342,13 +416,15 @@
             inputField.disabled = true;
             button.disabled = true;
             
-            if (chatHistory.length === 0) {
-                chatBox.innerHTML = `<p><strong>あなた:</strong> ${query}</p><p style="color: var(--main-purple); margin-top: 10px;"><strong>AI顧問 🤖:</strong> 調べています。少しお待ちください…</p>`;
-            } else {
-                const loadingText = chatBox.querySelector('.loading-text');
-                if (loadingText) loadingText.remove();
-                chatBox.innerHTML += `<p style="margin-top: 10px;"><strong>あなた:</strong> ${query}</p><p class="loading-text" style="color: var(--main-purple); margin-top: 10px;"><strong>AI顧問 🤖:</strong> 調べています。少しお待ちください…</p>`;
+            // 初回投稿時にダミー文を消す処理
+            if (chatBox.querySelector('p[style*="color: #666"]')) {
+                chatBox.innerHTML = "";
             }
+
+            const loadingText = chatBox.querySelector('.loading-text');
+            if (loadingText) loadingText.remove();
+            
+            chatBox.innerHTML += `<p style="margin-top: 10px;"><strong>あなた:</strong> ${query}</p><p class="loading-text" style="color: var(--main-purple); margin-top: 10px;"><strong>AI顧問 🤖:</strong> 調べています。少しお待ちください…</p>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
             const systemInstruction = 
@@ -388,30 +464,11 @@
                 let aiResponse = data.candidates[0].content.parts[0].text;
                 chatHistory.push({ role: "model", parts: [{ text: aiResponse }] });
 
-                aiResponse = aiResponse.replace(/###\s*(.*?)\n/g, '<strong>$1</strong><br>');
-                aiResponse = aiResponse.replace(/^\s*[\*\-]\s*/gm, '・ ');
+                // 履歴をローカルストレージに保存
+                localStorage.setItem('rakugo_ai_history', JSON.stringify(chatHistory));
 
-                aiResponse = aiResponse.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" style="color: var(--main-purple); font-weight: bold; text-decoration: underline;">$1</a>');
-                aiResponse = aiResponse.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-
-                const loadingText = chatBox.querySelector('.loading-text');
-                if (loadingText) loadingText.remove();
-                
-                if (chatHistory.length <= 2) {
-                    chatBox.innerHTML = `
-                        <p><strong>あなた:</strong> ${chatHistory[0].parts[0].text}</p>
-                        <p style="margin-top: 10px; border-top: 1px dashed #E2DDEB; padding-top: 10px;">
-                            <strong>AI顧問 🤖:</strong><br>${aiResponse}
-                        </p>
-                    `;
-                } else {
-                    chatBox.innerHTML += `
-                        <p style="margin-top: 10px; border-top: 1px dashed #E2DDEB; padding-top: 10px;">
-                            <strong>AI顧問 🤖:</strong><br>${aiResponse}
-                        </p>
-                    `;
-                }
-                chatBox.scrollTop = chatBox.scrollHeight;
+                // 描画を最新版に更新
+                renderChatHistory();
 
             } catch (error) {
                 console.error(error);
