@@ -108,7 +108,7 @@
             border-radius: 8px;
             padding: 12px 15px;
             margin-bottom: 20px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             line-height: 1.5;
             color: #555555;
         }
@@ -118,7 +118,7 @@
         .ai-notice-box .warning-text {
             color: #D9534F;
             font-weight: bold;
-            margin-top: 4px;
+            margin-top: 6px;
             display: block;
         }
 
@@ -241,7 +241,6 @@
 
         <main class="content">
 
-            <!-- 🏠 【ページ0】ホーム・部内ルール -->
             <div id="page-home" class="page-content active">
                 <div class="article-card">
                     <div class="article-category">📢 芸大落研落語組</div>
@@ -261,15 +260,14 @@
                     <span class="glossary-term">■ 策伝大賞（全日本学生落語選手権）</span>
                     <p class="glossary-def">岐阜県岐阜市で毎年開催される、学生落語の甲子園とも呼ばれる最大規模の大会。全国から数多くの学生が集まり、落語の祖とされる「策伝上人」にちなんで日本一を競い合う。</p>
 
-                    <span class="glossary-term">■ ちりとてちん杯（全国女性学生落語大会）</span>
-                    <p class="glossary-def">福井県小浜市で開催される、全国の「女性学生落語家」を対象としたユニークな大会。NHK連続テレビ小説『ちりとてちん』の舞台となった地で、華やかかつハイレベルな戦いが行われる。</p>
-
                     <span class="glossary-term">■ 桂福丸杯</span>
                     <p class="glossary-def">落語家の桂福丸さんが主宰する、学生を対象とした落語コンテスト。次世代を担う若い才能の発掘や、落語文化の普及を目的として熱い高座が繰り広げられる。</p>
+
+                    <span class="glossary-term">■ ちりとてちん杯（全国女性学生落語大会）</span>
+                    <p class="glossary-def">福井県小浜市で開催される、全国の「女性学生落語家」を対象としたユニークな大会。NHK連続テレビ小説『ちりとてちん』の舞台となった地で、華やかかつハイレベルな戦いが行われる。</p>
                 </div>
             </div>
 
-            <!-- 💻 【ページ1】AI相談室 -->
             <div id="page-ai" class="page-content">
                 <div class="article-card">
                     <div class="chat-header-area">
@@ -279,15 +277,13 @@
                     <h2 class="page-title-main">落語なんでも相談室</h2>
                     <p class="desc-text-sm">演目のランクや結末までのあらすじ、落語の歴史、プロのYouTube動画案内など、お気軽にご質問ください。</p>
 
-                    <!-- 🔒 安心・安全のための部員向けお知らせメッセージ -->
                     <div class="ai-notice-box">
-                        💡 <strong>【部員のみなへ】</strong>ここで入力した質問や会話が、AIに新しく自動学習（アップデート）されることはありません。落語の相談など安心して自由に使い倒してね！
-                        <span class="warning-text">⚠️ ただし、念のため「クレジットカード番号」や「個人のパスワード」といった、本当の極秘個人情報だけは入力しないように注意してください！</span>
+                        💡 ここで入力した質問や会話が、AIに新しく自動学習（アップデート）されることはありません。落語の相談など安心して自由に使い倒してね！
+                        <span class="warning-text">⚠️ ただし、「クレジットカード番号」や「個人のパスワード」といった、極秘個人情報だけは入力しないように注意してください！</span>
                     </div>
 
                     <div id="chat-box">
-                        <!-- ここに会話履歴、または初期メッセージがJavaScriptで入ります -->
-                    </div>
+                        </div>
 
                     <div class="chat-input-area">
                         <input type="text" id="ai-input" placeholder="例：たらちねについて教えて！" onkeypress="if(event.key==='Enter') askAI()">
@@ -303,7 +299,6 @@
                 </div>
             </div>
 
-            <!-- 🥁 【ページ2】寄席囃子音源集 -->
             <div id="page-music" class="page-content">
                 <div class="article-card">
                     <div class="article-category">🥁 出囃子・舞台音楽</div>
@@ -338,7 +333,6 @@
                 </div>
             </div>
 
-            <!-- 📖 【ページ3】落語用語集 -->
             <div id="page-terms" class="page-content">
                 <div class="article-card">
                     <div class="article-category">📖 基礎知識</div>
@@ -398,7 +392,6 @@
         </main>
     </div>
 
-    <!-- オリジナルのかわいいポップアップ（モーダル）本体 -->
     <div id="reset-modal" class="modal-overlay">
         <div class="modal-container">
             <div class="modal-text">これまでのAIとの会話履歴をすべて消去しますか？</div>
@@ -455,7 +448,7 @@
                     aiResponse = aiResponse.replace(/###\s*(.*?)\n/g, '<strong>$1</strong><br>');
                     aiResponse = aiResponse.replace(/^\s*[\*\-]\s*/gm, '・ ');
                     aiResponse = aiResponse.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" style="color: var(--main-purple); font-weight: bold; text-decoration: underline;">$1</a>');
-                    aiResponse = aiResponse.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\"/g, '<strong>$1</strong>');
+                    aiResponse = aiResponse.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
                     html += `
                         <p style="margin-top: 10px; border-top: 1px dashed #E2DDEB; padding-top: 10px;">
