@@ -59,6 +59,7 @@
             justify-content: space-between;
         }
         #page-title {
+            font-size: 1.2rem;
             font-weight: bold;
             color: var(--dark-purple);
         }
@@ -67,9 +68,9 @@
         .article-card { background-color: #ffffff; padding: 30px; border-radius: 6px; border: 1px solid var(--border-color); margin-bottom: 20px; }
         .article-category { color: var(--main-purple); font-size: 0.9rem; margin-bottom: 10px; font-weight: bold; }
         
-        /* インラインCSSの排除（見出し用の調整クラス） */
-        .page-title-main { font-size: 1.5rem; margin-bottom: 15px; }
-        .page-title-sub { font-size: 1.2rem; margin-bottom: 15px; margin-top: 30px; border-bottom: 2px solid var(--light-purple); padding-bottom: 5px; }
+        /* 見出し用の調整クラス */
+        .page-title-main { font-size: 1.4rem; margin-bottom: 15px; color: var(--dark-purple); }
+        .page-title-sub { font-size: 1.2rem; margin-bottom: 15px; margin-top: 30px; border-bottom: 2px solid var(--light-purple); padding-bottom: 5px; color: var(--dark-purple); }
         .desc-text { font-size: 0.9rem; color: #666; margin-bottom: 15px; }
         .desc-text-sm { font-size: 0.85rem; color: #666; margin-bottom: 15px; }
         
@@ -118,6 +119,70 @@
         .glossary-term { font-weight: bold; color: var(--dark-purple); font-size: 1.05rem; margin-top: 15px; display: block; }
         .glossary-def { margin-bottom: 15px; padding-left: 10px; border-left: 3px solid var(--main-purple); font-size: 0.95rem; color: #555; line-height: 1.5; }
 
+        /* 🌸 オリジナルのかわいいポップアップ（モーダル）のCSS */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-container {
+            background-color: #ffffff;
+            width: 90%;
+            max-width: 400px;
+            padding: 25px;
+            border-radius: 16px; /* 丸みをつけてかわいく */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            text-align: center;
+            transform: scale(0.85);
+            transition: transform 0.25s ease;
+            border: 2px solid var(--light-purple);
+        }
+        .modal-overlay.active .modal-container {
+            transform: scale(1);
+        }
+        .modal-text {
+            font-size: 1rem;
+            color: var(--dark-purple);
+            font-weight: bold;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .modal-btns {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        .modal-btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+        }
+        .modal-btn-cancel {
+            background-color: #ECE9F2;
+            color: #666666;
+        }
+        .modal-btn-cancel:hover { background-color: #DFDAE8; }
+        .modal-btn-confirm {
+            background-color: var(--main-purple);
+            color: #ffffff;
+        }
+        .modal-btn-confirm:hover { background-color: #6A539B; }
+
         /* スマホ用の見た目の自動切り替え（レスポンシブ） */
         @media (max-width: 768px) {
             body { flex-direction: column; }
@@ -158,7 +223,7 @@
             <div id="page-home" class="page-content active">
                 <div class="article-card">
                     <div class="article-category">📢 芸大落研落語組</div>
-                    <h1 class="page-title-main">落語組部内ルール</h1>
+                    <h2 class="page-title-main">落語組部内ルール</h2>
 
                     <div class="rule-box">
                         <ul>
@@ -168,14 +233,14 @@
                         </ul>
                     </div>
 
-                    <h2 class="page-title-sub">🏆 主要な学生落語大会</h2>
+                    <h3 class="page-title-sub">🏆 主要な学生落語大会</h3>
                     <p class="desc-text">学生落語家たちが目標にする、全国規模の代表的な大会一覧。高座のブラッシュアップや目標設定の参考にしよう。</p>
 
                     <span class="glossary-term">■ 策伝大賞（全日本学生落語選手権）</span>
                     <p class="glossary-def">岐阜県岐阜市で毎年開催される、学生落語の甲子園とも呼ばれる最大規模の大会。全国から数多くの学生が集まり、落語の祖とされる「策伝上人」にちなんで日本一を競い合う。</p>
 
                     <span class="glossary-term">■ 桂福丸杯（全国学生落語いなみ大会）</span>
-                    <p class="glossary-def">兵庫県稲美町で開催される大会。プロの落語家である桂福丸師匠がプロデュースに携わっており、学生らしい瑞々しさと技術を競い合う熱い高座が繰り広げられる。</p>
+                    <p class="glossary-def">兵庫県稲美町で開催される大会. プロの落語家である桂福丸師匠がプロデュースに携わっており、学生らしい瑞々しさと技術を競い合う熱い高座が繰り広げられる。</p>
 
                     <span class="glossary-term">■ ちりとてちん杯（全国女性学生落語大会）</span>
                     <p class="glossary-def">福井県小浜市で開催される、全国の「女性学生落語家」を対象としたユニークな大会。NHK連続テレビ小説『ちりとてちん』の舞台となった地で、華やかかつハイレベルな戦いが行われる。</p>
@@ -186,9 +251,9 @@
                 <div class="article-card">
                     <div class="chat-header-area">
                         <div class="article-category">落語研究寄席の会・AI</div>
-                        <button type="button" class="clear-btn" onclick="clearChatHistory()">🧹 会話をリセットする</button>
+                        <button type="button" class="clear-btn" onclick="openResetModal()">🧹 会話をリセットする</button>
                     </div>
-                    <h1 class="page-title-main">落語なんでも相談室</h1>
+                    <h2 class="page-title-main">落語なんでも相談室</h2>
                     <p class="desc-text-sm">演目のランクや結末までのあらすじ、落語の歴史、プロのYouTube動画案内など、お気軽にご質問ください。</p>
 
                     <div id="chat-box">
@@ -211,7 +276,7 @@
             <div id="page-music" class="page-content">
                 <div class="article-card">
                     <div class="article-category">🥁 出囃子・舞台音楽</div>
-                    <h1 class="page-title-main">寄席囃子 Spotifyアルバム一覧</h1>
+                    <h2 class="page-title-main">寄席囃子 Spotifyアルバム一覧</h2>
                     <p class="desc-text-sm">寄席や高座の雰囲気を掴み、出囃子の選曲に役立つプロの公式音源アルバムです。</p>
 
                     <table class="info-table">
@@ -245,7 +310,7 @@
             <div id="page-terms" class="page-content">
                 <div class="article-card">
                     <div class="article-category">📖 基礎知識</div>
-                    <h1 class="page-title-main">落語研究会 必須用語集</h1>
+                    <h2 class="page-title-main">落語研究会 必須用語集</h2>
                     <p class="desc-text-sm">落研の活動や寄席の番組（プログラム）を理解する上で必要な専門用語。</p>
 
                     <div class="glossary-section-title">📌 番組（香盤・出番）に関する用語</div>
@@ -277,7 +342,7 @@
                     <p class="glossary-def">2人の落語家が並び立ってメインを務める落語会のこと。実力派同士の対決や師弟対談など、2人のネタの対比や掛け合いを楽しむ。</p>
 
                     <span class="glossary-term">寄席（よせ）</span>
-                    <p class="glossary-def">年中無休で毎日、落語 or 色物（漫才やマジック）を交代で上演している常設の劇場のこと（東京の鈴本演芸場、新宿末廣亭、大阪の天満天神繁昌亭など）。多くの演者が10〜15分程度の短いネタで次々と登場する。</p>
+                    <p class="glossary-def">年中無休で毎日、落語や色物（漫才やマジック）を交代で上演している常設の劇場のこと（東京の鈴本演芸場、新宿末廣亭、大阪の天満天神繁昌亭など）。多くの演者が 10〜15 分程度の短いネタで次々と登場する。</p>
 
                     <span class="glossary-term">落語会（らくごかい / ホール落語）</span>
                     <p class="glossary-def">市民ホールや劇場を借りて、特定の主催者が企画する単発の落語公演のこと。出演者やネタがあらかじめ決まっていることが多い。</p>
@@ -291,7 +356,7 @@
                     <p class="glossary-def">開口一番に演じられる、短くて分かりやすい滑稽噺のこと。落語の基本が凝縮されており、初心者が最初に覚えるべきネタである。</p>
 
                     <span class="glossary-term">サゲ / オチ</span>
-                    <p class="glossary-def">噺の結末、最後に落とす部分のこと。「地口サゲ（駄洒落）」「仕込みサゲ」「逆さサゲ」など様々な種類が存在する。</p>
+                    <p class="glossary-def">噺の結慢、最後に落とす部分のこと。「地口サゲ（駄洒落）」「仕込みサゲ」「逆さサゲ」など様々な種類が存在する。</p>
 
                     <span class="glossary-term">出囃子（でばやし）</span>
                     <p class="glossary-def">落語家が高座に登場する際に、三味線や太鼓で演奏されるテーマ曲のこと。演者ごとに専用の曲が決まっている。</p>
@@ -299,6 +364,16 @@
             </div>
 
         </main>
+    </div>
+
+    <div id="reset-modal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-text">これまでのAIとの会話履歴をすべて消去しますか？</div>
+            <div class="modal-btns">
+                <button type="button" class="modal-btn modal-btn-cancel" onclick="closeResetModal()">キャンセル</button>
+                <button type="button" class="modal-btn modal-btn-confirm" onclick="clearChatHistory()">消去する</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -361,13 +436,20 @@
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        // 会話をリセットする関数
+        // 🌸 かわいいポップアップを開く・閉じる関数
+        function openResetModal() {
+            document.getElementById('reset-modal').classList.add('active');
+        }
+        function closeResetModal() {
+            document.getElementById('reset-modal').classList.remove('active');
+        }
+
+        // 会話を本当にリセットする関数（カスタムダイアログから呼び出される）
         function clearChatHistory() {
-            if (confirm("これまでのAIとの会話履歴をすべて消去しますか？")) {
-                chatHistory = [];
-                localStorage.removeItem('rakugo_ai_history');
-                initChatBox();
-            }
+            chatHistory = [];
+            localStorage.removeItem('rakugo_ai_history');
+            initChatBox();
+            closeResetModal(); // ダイアログを閉じる
         }
 
         function switchPage(pageName) {
