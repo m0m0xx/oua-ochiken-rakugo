@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>落語組用 落語AI大百科</title>
+    <style>
+        :root {
+            --main-purple: #7F67B2;
+            --light-purple: #F3EFFF;
+            --dark-purple: #4A3E65;
+            --bg-gray: #FAFAFA;
+            --text-color: #333333;
+            --border-color: #E2DDEB;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-gray);
+            display: flex;
+            height: 100vh;
+        }
+
+        /* サイドバー */
+        .sidebar {
+            width: 240px;
+            background-color: var(--dark-purple);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+        }
+        .sidebar-brand {
+            padding: 0 20px 20px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .sidebar-menu { list-style: none; margin-top: 20px; }
+        .sidebar-menu li a {
+            display: block;
+            padding: 10px 20px;
+            color: #DDD5ED;
+            text-decoration: none;
+        }
+        .sidebar-menu li.active a { background-color: var(--main-purple); color: #ffffff; }
+
+        /* メイン */
+        .main-container { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+        .header {
+            background-color: #ffffff;
+            padding: 15px 30px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .content { max-width: 800px; width: 100%; margin: 0 auto; padding: 40px 20px; }
+        .article-card { background-color: #ffffff; padding: 30px; border-radius: 6px; border: 1px solid var(--border-color); margin-bottom: 20px; }
+        .article-category { color: var(--main-purple); font-size: 0.9rem; margin-bottom: 10px; font-weight: bold; }
+        
+        /* AIチャット部分 */
+        #chat-box {
+            background: #F8F6FC;
+            border: 1px solid #E2DDEB;
+            padding: 15px;
+            border-radius: 6px;
+            min-height: 200px;
+            max-height: 450px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .chat-input-area { display: flex; gap: 10px; }
+        .chat-input-area input { flex: 1; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; }
+        .chat-input-area button { background-color: var(--main-purple); color: white; border: none; padding: 0 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .chat-input-area button:disabled { background-color: #ccc; cursor: not-allowed; }
+        
+        /* 例題タグ */
+        .example-tags { margin-top: 15px; display: flex; flex-wrap: wrap; gap: 8px; }
+        .tag { background: var(--light-purple); color: var(--dark-purple); padding: 6px 12px; border-radius: 12px; font-size: 0.85rem; cursor: pointer; border: 1px solid #E2DDEB; font-weight: 500; }
+        .tag:hover { background: #E1D7F5; }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="sidebar-brand">落語組用 🏯</div>
+        <ul class="sidebar-menu">
+            <li class="active"><a href="#">🤖 AIなんでも相談室</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-container">
+        <header class="header">
+            <div style="font-weight: bold; color: var(--dark-purple);">落語組専用Webページ</div>
+        </header>
+
+        <main class="content">
+            <div class="article-card">
+                <div class="article-category">🌟 落語研究会・AI顧問</div>
+                <h2 style="margin-bottom: 10px; font-size: 1.2rem;">落語なんでも相談室</h2>
+                <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">ネタの種類（前座噺など）やあらすじ、演じ方のコツ、落語の歴史まで、なんでも気軽に聞いてな！</p>
+                
+                <div id="chat-box">
+                    <p style="color: #666;">💬 下のボタンを押すか、直接知りたいことを入力して「質問する」を押してください。</p>
+                </div>
+
+                <div class="chat-input-area">
+                    <input type="text" id="ai-input" placeholder="例：たらちねの登場人物と演じ方のコツを教えて！" onkeypress="if(event.key==='Enter') askAI()">
+                    <button id="ai-btn" onclick="askAI()">質問する</button>
+                </div>
+
+                <div class="example-tags">
+                    <span class="tag" onclick="clickTag('時そばって前座噺？中ネタ？大ネタ？')">🔍 前座噺か調べる</span>
+                    <span class="tag" onclick="clickTag('与太郎を演じるときの表情や声のコツは？')">🗣️ キャラ演じ分けのコツ</span>
+                    <span class="tag" onclick="clickTag('死神のサゲ（オチ）の種類を解説して')">🎬 オチ（サゲ）の種類</span>
+                    <span class="tag" onclick="clickTag('開口一番（トップバッター）にぴったりな初心者向けの滑稽噺を3つ教えて')">💡 おすすめのネタ相談</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function clickTag(text) {
+            document.getElementById('ai-input').value = text;
+            document.getElementById('ai-input').focus();
+        }
+
+        function getApiKey() {
+            if (typeof process !== 'undefined' && process.env && process.env.GEMINI_API_KEY) {
+                return process.env.GEMINI_API_KEY;
+            }
+            if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_GEMINI_API_KEY) {
+                return import.meta.env.VITE_GEMINI_API_KEY;
+            }
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('key')) return urlParams.get('key');
+            
+            return null;
+        }
+
+        async function askAI() {
+            const inputField = document.getElementById('ai-input');
+            const button = document.getElementById('ai-btn');
+            const chatBox = document.getElementById('chat-box');
+            const query = inputField.value.trim();
+            
+            const apiKey = getApiKey();
+
+            if (!query) return;
+            
+            if (!apiKey) {
+                chatBox.innerHTML = `
+                    <p style="color: red; font-weight: bold;">⚠️ サーバーのAPIキー設定が完了していません</p>
+                    <p style="font-size: 0.9rem; color: #555; margin-top: 5px;">
+                        【管理者向け設定手順】<br>
+                        このページを配信しているサーバー（Vercel等）の管理画面から、環境変数名 <code>GEMINI_API_KEY</code> として、取得したGoogleのAPIキーを登録してください。<br><br>
+                        ※一時的に手元で動作テストをしたい場合は、ブラウザのURLの末尾に <code>?key=あなたのAPIキー</code> を付与してアクセスしてください。
+                    </p>
+                `;
+                return;
+            }
+
+            inputField.disabled = true;
+            button.disabled = true;
+            chatBox.innerHTML = `<p><strong>あなた:</strong> ${query}</p><p style="color: var(--main-purple); margin-top: 10px;"><strong>AI顧問 🤖:</strong> ほほう、良い質問やね。ちょっと調べたるから待ちぃな...</p>`;
+
+            const systemInstruction = 
+                "あなたは落語の歴史、演目、しぐさ、演出、寄席の文化など、落語に関するすべての知識に精通した、落語研究会の優秀で粋な「AI顧問」です。\n" +
+                "部員から落語に関する質問（演目のランク、あらすじ、キャラクターの演じ分けのコツ、お勧めネタ、歴史、専門用語など）をされたら、プロの視点から具体的かつ分かりやすく回答してください。\n" +
+                "【回答の心得】\n" +
+                "1. 演目について聞かれた場合は、前座噺・中ネタ・大ネタのどれにあたるかも必ず分かりやすく補足すること。\n" +
+                "2. 演じ方のコツ（目線、声色、扇子・手ぬぐいの使い方、噛みやすいフレーズなど）を最低1つは盛り込むこと。\n" +
+                "3. 丁寧でありながら、落語の雰囲気を愛する「ちょっと粋な先輩・顧問風」の親しみやすい口調（〜だよ、〜だね、〜やで、など）で、ユーモアを交えて解説してください。";
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: systemInstruction + "\n\nユーザーの質問: " + query }] }]
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error.message);
+                }
+                
+                let aiResponse = data.candidates[0].content.parts[0].text;
+                aiResponse = aiResponse.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+                chatBox.innerHTML = `
+                    <p><strong>あなた:</strong> ${query}</p>
+                    <p style="margin-top: 10px; border-top: 1px dashed #E2DDEB; padding-top: 10px;">
+                        <strong>AI顧問 🤖:</strong><br>${aiResponse}
+                    </p>
+                `;
+            } catch (error) {
+                console.error(error);
+                chatBox.innerHTML = `
+                    <p><strong>あなた:</strong> ${query}</p>
+                    <p style="color: red; margin-top: 10px;"><strong>エラーが発生しました。</strong><br>通信エラーか、設定されているAPIキーが無効です。(${error.message})</p>
+                `;
+            } finally {
+                inputField.value = "";
+                inputField.disabled = false;
+                button.disabled = false;
+                inputField.focus();
+            }
+        }
+    </script>
+</body>
+</html>
