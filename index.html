@@ -162,6 +162,19 @@
             background-color: #fafafa;
         }
 
+        /* 🔎 グラウンディング出典表示のCSS */
+        .grounding-sources {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed #E2DDEB;
+            font-size: 0.8rem;
+            color: #888;
+        }
+        .grounding-sources a {
+            color: var(--main-purple);
+            text-decoration: underline;
+        }
+
         /* オリジナルのポップアップ（モーダル）のCSS */
         .modal-overlay {
             position: fixed;
@@ -546,9 +559,17 @@
                     aiResponse = aiResponse.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" style="color: var(--main-purple); font-weight: bold; text-decoration: underline;">$1</a>');
                     aiResponse = aiResponse.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
+                    // グラウンディング（検索の裏付け）の出典表示
+                    let sourcesHtml = "";
+                    if (msg.groundingSources && msg.groundingSources.length > 0) {
+                        const links = msg.groundingSources.map(s => `<a href="${s.uri}" target="_blank">${s.title || 'ソース'}</a>`).join(' / ');
+                        sourcesHtml = `<div class="grounding-sources">🔎 参照元: ${links}</div>`;
+                    }
+
                     html += `
                         <p style="margin-top: 10px; border-top: 1px dashed #E2DDEB; padding-top: 10px;">
                             <strong>AI顧問 🤖:</strong><br>${aiResponse}
+                            ${sourcesHtml}
                         </p>
                     `;
                 }
@@ -636,6 +657,8 @@
             chatBox.innerHTML += `<p style="margin-top: 10px;"><strong>あなた:</strong> ${query}</p><p class="loading-text" style="color: var(--main-purple); margin-top: 10px;"><strong>AI顧問 🤖:</strong> 調べています。少しお待ちください…</p>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
+            // ★修正点：文字列の連結を "+" で正しく繋げ、8番目・9番目の指示も
+            // 実際にAIへ送られるようにした（以前は ";" で途切れていて送られていなかった）
             const systemInstruction = 
                 "あなたは落語の歴史、演目、寄席の文化など、落語に関するすべての知識に精通した、落語研究寄席の会の「AI顧問」です。\n" +
                 "部員から落語に関する質問をされたら、プロの視点から具体的かつ分かりやすく回答してください。\n" +
@@ -650,7 +673,7 @@
                 "6. 口調は丁寧で親しみやすい「標準的な敬語（〜です、〜ます）」に統一してください。\n" +
                 "7. 相手の名前（〇〇君など）は絶対に呼ばないでください。\n" +
                 "8. 調べても完璧で明確なものが出てこなかった場合、演目には答えず、「調べてもわかりませんでした。AIは完璧でないため、先輩に聞いたり、調べてみたりしてください。」と返してください。\n" +
-            　　"9. 基本的にはWikipediaを文献とし、調べて出てこなければ答えないでください。間違ったあらすじなどの情報は絶対に言わないでください。\n" +
+                "9. あなたには検索ツールが与えられています。演目のあらすじやサゲなど事実に関わる回答をする前には、必ず検索ツールを使って裏付けを取ってから回答してください。検索結果に無い情報を推測で補って断定しないでください。特にWikipediaや落語協会・各種寄席・落語家の公式サイトなど、信頼できる情報源を優先してください。";
 
             chatHistory.push({ role: "user", parts: [{ text: query }] });
 
@@ -662,6 +685,12 @@
                         contents: [
                             { role: "user", parts: [{ text: systemInstruction }] },
                             ...chatHistory
+                        ],
+                        // ★追加点：Google検索によるグラウンディング（裏取り検索）を有効化。
+                        // これによりAIが実際にWeb検索した結果をもとに回答するようになり、
+                        // ハルシネーション（もっともらしい嘘）が大幅に減る。
+                        tools: [
+                            { google_search: {} }
                         ]
                     })
                 });
@@ -671,9 +700,20 @@
                 if (data.error) {
                     throw new Error(data.error.message);
                 }
-                
-                let aiResponse = data.candidates[0].content.parts[0].text;
-                chatHistory.push({ role: "model", parts: [{ text: aiResponse }] });
+
+                const candidate = data.candidates[0];
+                let aiResponse = candidate.content.parts[0].text;
+
+                // グラウンディングで使われた参照元（あれば）を抽出
+                let groundingSources = [];
+                const groundingChunks = candidate.groundingMetadata && candidate.groundingMetadata.groundingChunks;
+                if (groundingChunks) {
+                    groundingSources = groundingChunks
+                        .filter(c => c.web)
+                        .map(c => ({ uri: c.web.uri, title: c.web.title }));
+                }
+
+                chatHistory.push({ role: "model", parts: [{ text: aiResponse }], groundingSources: groundingSources });
 
                 // 履歴をローカルストレージに保存
                 localStorage.setItem('rakugo_ai_history', JSON.stringify(chatHistory));
