@@ -684,7 +684,9 @@
                     body: JSON.stringify({
                         contents: [
                             { role: "user", parts: [{ text: systemInstruction }] },
-                            ...chatHistory
+                            // ★修正点：chatHistory には groundingSources など画面表示用の
+                            // 余計なフィールドが付いているので、APIには role と parts だけを送る
+                            ...chatHistory.map(msg => ({ role: msg.role, parts: msg.parts }))
                         ],
                         // ★追加点：Google検索によるグラウンディング（裏取り検索）を有効化。
                         // これによりAIが実際にWeb検索した結果をもとに回答するようになり、
